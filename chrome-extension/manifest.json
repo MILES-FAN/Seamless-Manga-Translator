@@ -1,0 +1,36 @@
+{
+    "manifest_version": 3,
+    "name": "Manga Translator",
+    "version": "1.0",
+    "description": "Send images to manga translator server",
+    "permissions": [
+        "contextMenus",
+        "activeTab",
+        "notifications",
+        "scripting",
+        "storage",
+        "tabs"
+    ],
+    "host_permissions": [
+        "http://127.0.0.1:11451/*",
+        "<all_urls>"
+    ],
+    "web_accessible_resources": [{
+        "resources": ["convertImageToBase64.js"],
+        "matches": ["<all_urls>"]
+    }],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "icons": {
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "48": "icon48.png",
+            "128": "icon128.png"
+        }
+    }
+} 

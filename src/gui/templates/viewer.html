@@ -1,0 +1,131 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body { 
+                    margin: 0; 
+                    background: #1a1a1a; 
+                    color: white;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    font-size: 18px;  /* 增大字体 */
+                }
+                #images {
+                    width: 100%;
+                    max-width: 100vw;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .image-container { 
+                    position: relative;
+                    margin: 10px;
+                    width: 95%;  /* 留一些边距 */
+                    display: flex;
+                    justify-content: center;
+                }
+                .image-wrapper {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                }
+                .image-container img { 
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                }
+                .text-region {
+                    position: absolute;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    background: rgba(128, 128, 128, 0.2);
+                    cursor: pointer;
+                    transform-origin: top left;
+                }
+                .text-region:hover {
+                    background: rgba(0, 120, 215, 0.3);
+                }
+                .translation-bubble {
+                    position: absolute;
+                    background: rgba(0, 0, 0, 0.8);
+                    padding: 8px;
+                    border-radius: 4px;
+                    pointer-events: none;
+                    display: none;
+                    color: white;
+                    max-width: 540px;
+                    text-align: center;
+                    z-index: 1000;
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                }
+                .original-text { color: #cccccc; margin-bottom: 4px; }
+                .translated-text { color: white; }
+            </style>
+        </head>
+        <body>
+            <div id="images"></div>
+            <script>
+                function updateRegionPositions() {
+                    document.querySelectorAll('.image-container').forEach(container => {
+                        const wrapper = container.querySelector('.image-wrapper');
+                        const img = wrapper.querySelector('img');
+                        const regions = wrapper.querySelectorAll('.text-region');
+                        
+                        // 计算缩放比例
+                        const scaleX = wrapper.clientWidth / img.naturalWidth;
+                        const scaleY = wrapper.clientHeight / img.naturalHeight;
+                        
+                        regions.forEach(region => {
+                            const originalX = parseFloat(region.dataset.x);
+                            const originalY = parseFloat(region.dataset.y);
+                            const originalWidth = parseFloat(region.dataset.width);
+                            const originalHeight = parseFloat(region.dataset.height);
+                            
+                            region.style.left = (originalX * scaleX) + 'px';
+                            region.style.top = (originalY * scaleY) + 'px';
+                            region.style.width = (originalWidth * scaleX) + 'px';
+                            region.style.height = (originalHeight * scaleY) + 'px';
+                        });
+                    });
+                }
+
+                function showTranslation(element, original, translated) {
+                    const bubble = element.querySelector('.translation-bubble');
+                    bubble.style.display = 'block';
+                    
+                    // 调整气泡位置
+                    const rect = element.getBoundingClientRect();
+                    const bubbleRect = bubble.getBoundingClientRect();
+                    
+                    let top = -bubbleRect.height - 10;
+                    if (rect.top + top < 0) {
+                        top = rect.height + 10;
+                    }
+                    
+                    bubble.style.top = `${top}px`;
+                    bubble.style.left = `${(rect.width - bubbleRect.width) / 2}px`;
+                }
+
+                function hideTranslation(element) {
+                    const bubble = element.querySelector('.translation-bubble');
+                    bubble.style.display = 'none';
+                }
+
+                // 监听窗口大小变化
+                window.addEventListener('resize', updateRegionPositions);
+                
+                // 监听图片加载完成
+                document.addEventListener('DOMContentLoaded', function() {
+                    const images = document.querySelectorAll('.image-container img');
+                    images.forEach(img => {
+                        img.addEventListener('load', updateRegionPositions);
+                    });
+                    // 初始更新位置
+                    updateRegionPositions();
+                });
+            </script>
+        </body>
+        </html>
+        
