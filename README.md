@@ -2,6 +2,10 @@
 
 [English](#english) | [中文](#中文) | [日本語](#日本語)
 
+![Translator](https://github.com/user-attachments/assets/08ad11f1-d536-41c3-a37c-9d5e0ffe670c)
+![Result](https://github.com/user-attachments/assets/978cf9a8-6550-4229-a8ec-53736a8d19f7)
+
+
 # English
 
 ## Overview
@@ -44,9 +48,6 @@ python main.py
 - API settings can be configured through the interface
 - Supports multiple translation presets
 - Settings are automatically saved
-
-### License
-[Add your license information here]
 
 ---
 
